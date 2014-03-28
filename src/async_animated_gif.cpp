@@ -1,5 +1,6 @@
 #include <cerrno>
 #include <cstdlib>
+#include <direct.h>
 
 #include "common.h"
 #include "utils.h"
@@ -8,6 +9,7 @@
 #include "buffer_compat.h"
 
 #include "loki/ScopeGuard.h"
+#include "snprintf_mock.h"
 
 using namespace v8;
 using namespace node;
@@ -38,7 +40,7 @@ AsyncAnimatedGif::EIO_Push(uv_work_t *req)
     push_request *push_req = (push_request *)req->data;
 
     if (!is_dir(push_req->tmp_dir)) {
-        if (mkdir(push_req->tmp_dir, 0775) == -1) {
+        if (mkdir(push_req->tmp_dir) == -1) {
             // there is no way to return this error to node as this call was
             // async with no callback
             fprintf(stderr, "Could not mkdir(%s) in AsyncAnimatedGif::EIO_Push.\n",
@@ -51,7 +53,7 @@ AsyncAnimatedGif::EIO_Push(uv_work_t *req)
     snprintf(fragment_dir, 512, "%s/%d", push_req->tmp_dir, push_req->push_id);
 
     if (!is_dir(fragment_dir)) {
-        if (mkdir(fragment_dir, 0775) == -1) {
+        if (mkdir(fragment_dir) == -1) {
             fprintf(stderr, "Could not mkdir(%s) in AsyncAnimatedGif::EIO_Push.\n",
                 fragment_dir);
             return;

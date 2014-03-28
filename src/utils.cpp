@@ -1,12 +1,17 @@
 #include <stdio.h>
-#include <dirent.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
+#include "dirent.h"
 #include "common.h"
 #include "utils.h"
+
+#ifndef _WIN32
+#include <unistd.h>
+#endif
+
+#define S_ISDIR(B) ((B)&_S_IFDIR)
 
 char **
 find_files(const char *path)

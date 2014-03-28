@@ -4,6 +4,7 @@
         'type': 'static_library',
         'standalone_static_library': 1,
         'sources': [
+            'dirent.c',
             'dgif_lib.c',
             'egif_lib.c',
             'gif_err.c',
